@@ -12,6 +12,16 @@ class App extends Component {
     };
   }
 
+  // Truyen du lieu vao state stasks sau khi generate data
+  componentDidMount() {
+    if (localStorage && localStorage.getItem("tasks")) {
+      var tasks = JSON.parse(localStorage.getItem("tasks")); // Chuyen du lieu tu dang string sang object
+      this.setState({
+        tasks: tasks,
+      });
+    }
+  }
+
   onGenerateData = () => {
     var tasks = [
       {
@@ -30,8 +40,13 @@ class App extends Component {
         status: true,
       },
     ];
-    console.log(tasks);
+    this.setState({
+      tasks: tasks,
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // Chuyen du lieu tu object sang string
   };
+
+  // Thuat toan Random ra ID
 
   s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
@@ -57,6 +72,7 @@ class App extends Component {
   }
 
   render() {
+    var { tasks } = this.state; // var tasks = this.state.tasks
     return (
       <div className="container">
         <div className="text-center">
@@ -91,7 +107,7 @@ class App extends Component {
 
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList />
+                <TaskList tasks={tasks} />
               </div>
             </div>
           </div>
