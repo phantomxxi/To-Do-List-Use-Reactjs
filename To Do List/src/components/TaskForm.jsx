@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 
 class TaskForm extends Component {
+  // Truyen props tu App vao TaskForm
   onCloseForm = () => {
     this.props.onCloseForm();
   };
@@ -11,9 +12,7 @@ class TaskForm extends Component {
           <h3 className="panel-title">
             Thêm Công Việc
             <span
-              className="iconify text-right"
-              data-icon="akar-icons:circle-plus"
-              data-inline="true"
+              className="fa fa-times-circle text-right"
               onClick={this.onCloseForm}
             ></span>
           </h3>
