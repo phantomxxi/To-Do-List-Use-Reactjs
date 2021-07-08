@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       tasks: [], // id : unique, name, status
+      isDisplayForm: false,
     };
   }
 
@@ -71,8 +72,27 @@ class App extends Component {
     );
   }
 
+  // Xet state neu true => false và ngược lại
+  onToggleForm = () => {
+    this.setState({
+      isDisplayForm: !this.state.isDisplayForm,
+    });
+  };
+
+  // Logic bam vao icon them cong viec thi dong form
+  onCloseForm = () => {
+    this.setState({
+      isDisplayForm: false,
+    });
+  };
+
   render() {
-    var { tasks } = this.state; // var tasks = this.state.tasks
+    var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks
+    var elmTaskForm = isDisplayForm ? (
+      <TaskForm onCloseForm={this.onCloseForm} />
+    ) : (
+      ""
+    ); // Nếu state isDisplayForm === true thì hiện taskform còn ngược lại thì ko hiện
     return (
       <div className="container">
         <div className="text-center">
@@ -80,13 +100,27 @@ class App extends Component {
         </div>
 
         <div className="row">
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <div
+            className={
+              isDisplayForm ? "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ""
+            }
+          >
             {/* Form */}
-            <TaskForm />
+            {elmTaskForm}
           </div>
 
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            <button type="button" className="btn btn-primary">
+          <div
+            className={
+              isDisplayForm
+                ? "col-xs-8 col-sm-8 col-md-8 col-lg-8"
+                : "col-xs-12 col-sm-12 col-md-12 col-lg-12"
+            }
+          >
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={this.onToggleForm}
+            >
               <span
                 className="iconify mr-5"
                 data-icon="akar-icons:circle-plus"
