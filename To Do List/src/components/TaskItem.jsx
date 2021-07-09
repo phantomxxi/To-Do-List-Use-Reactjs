@@ -4,6 +4,9 @@ class TaskItem extends Component {
   onUpdateStatus = () => {
     this.props.onUpdateStatus(this.props.task.id); // Truyen id cua tung task vao trong props onUpdateStatus
   };
+  onDelete = () => {
+    this.props.onDelete(this.props.task.id); // Truyen id cua tung task vao trong props onDelete
+  };
   render() {
     var { task, index } = this.props;
     return (
@@ -32,7 +35,11 @@ class TaskItem extends Component {
             Sửa
           </button>
           &nbsp;
-          <button type="button" className="btn btn-danger">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={this.onDelete}
+          >
             <span
               className="iconify mr-5"
               data-icon="fluent:delete-24-filled"
