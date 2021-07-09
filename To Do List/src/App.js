@@ -23,32 +23,7 @@ class App extends Component {
     }
   }
 
-  onGenerateData = () => {
-    var tasks = [
-      {
-        id: this.generateID(),
-        name: "Học lập trình",
-        status: true,
-      },
-      {
-        id: this.generateID(),
-        name: "Đi bơi",
-        status: false,
-      },
-      {
-        id: this.generateID(),
-        name: "Ngủ",
-        status: true,
-      },
-    ];
-    this.setState({
-      tasks: tasks,
-    });
-    localStorage.setItem("tasks", JSON.stringify(tasks)); // Chuyen du lieu tu object sang string sau do luu vao localStogare
-  };
-
-  // Thuat toan Random ra ID
-
+  // Logic Random ra ID
   s4() {
     return Math.floor((1 + Math.random()) * 0x10000)
       .toString(16)
@@ -138,13 +113,7 @@ class App extends Component {
               ></span>
               Thêm Công Việc
             </button>
-            <button
-              type="button"
-              className="btn btn-danger ml-5"
-              onClick={this.onGenerateData}
-            >
-              Generate Data
-            </button>
+
             {/* Search - Sort */}
             <Control />
             {/* List */}

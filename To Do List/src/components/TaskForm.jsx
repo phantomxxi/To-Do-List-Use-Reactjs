@@ -31,6 +31,17 @@ class TaskForm extends Component {
   onSubmit = event => {
     event.preventDefault();
     this.props.onSubmit(this.state);
+    // Cancel & close form
+    this.onClear();
+    this.onCloseForm();
+  };
+
+  // Xoa du lieu o state (chuc nang xoa du lieu o task form)
+  onClear = () => {
+    this.setState({
+      name: "",
+      status: false,
+    });
   };
 
   render() {
@@ -79,7 +90,11 @@ class TaskForm extends Component {
                 Lưu lại
               </button>
               &nbsp;
-              <button type="submit" className="btn btn-danger">
+              <button
+                type="submit"
+                className="btn btn-danger"
+                onClick={this.onClear}
+              >
                 <span
                   className="iconify mr-5"
                   data-icon="fa-regular:times-circle"
