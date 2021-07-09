@@ -44,7 +44,7 @@ class App extends Component {
     this.setState({
       tasks: tasks,
     });
-    localStorage.setItem("tasks", JSON.stringify(tasks)); // Chuyen du lieu tu object sang string
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // Chuyen du lieu tu object sang string sau do luu vao localStogare
   };
 
   // Thuat toan Random ra ID
@@ -86,10 +86,20 @@ class App extends Component {
     });
   };
 
+  onSubmit = data => {
+    var { tasks } = this.state; // tasks = this.state.tasks
+    data.id = this.generateID(); // task
+    tasks.push(data);
+    this.setState({
+      tasks: tasks,
+    });
+    localStorage.setItem("tasks", JSON.stringify(tasks)); // chuyen du lieu sau khi submit tu dang Object sang string va luu vao localStogare
+  };
+
   render() {
     var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks
     var elmTaskForm = isDisplayForm ? (
-      <TaskForm onCloseForm={this.onCloseForm} />
+      <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} />
     ) : (
       ""
     ); // Nếu state isDisplayForm === true thì hiện taskform còn ngược lại thì ko hiện

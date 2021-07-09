@@ -1,10 +1,38 @@
 import React, { Component } from "react";
 
 class TaskForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      status: false,
+    };
+  }
+
   // Truyen props tu App vao TaskForm
   onCloseForm = () => {
     this.props.onCloseForm();
   };
+
+  // Lay data cua input va select truyen vao trong state
+  onChange = event => {
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    if (name === "status") {
+      value = target.value === "true" ? true : false; // ep kieu string "true" "false" ve kieu boolean
+    }
+    this.setState({
+      [name]: value,
+    });
+  };
+
+  // Truyen state vao props de sent data sang App de render
+  onSubmit = event => {
+    event.preventDefault();
+    this.props.onSubmit(this.state);
+  };
+
   render() {
     return (
       <div className="panel panel-warning">
@@ -18,14 +46,25 @@ class TaskForm extends Component {
           </h3>
         </div>
         <div className="panel-body">
-          <form>
+          <form onSubmit={this.onSubmit}>
             <div className="form-group">
               <label>Tên :</label>
-              <input type="text" className="form-control" name="name" />
+              <input
+                type="text"
+                className="form-control"
+                name="name"
+                value={this.state.name}
+                onChange={this.onChange}
+              />
             </div>
             <label>Trạng Thái :</label>
 
-            <select name="status" className="form-control">
+            <select
+              name="status"
+              className="form-control"
+              value={this.state.status}
+              onChange={this.onChange}
+            >
               <option value={true}>Kích hoạt</option>
               <option value={false}>Ẩn</option>
             </select>
