@@ -61,6 +61,7 @@ class App extends Component {
     });
   };
 
+  // Logic lay data task form sau khi submit
   onSubmit = data => {
     var { tasks } = this.state; // tasks = this.state.tasks
     data.id = this.generateID(); // task
@@ -69,6 +70,33 @@ class App extends Component {
       tasks: tasks,
     });
     localStorage.setItem("tasks", JSON.stringify(tasks)); // chuyen du lieu sau khi submit tu dang Object sang string va luu vao localStogare
+  };
+
+  // logic update status tu true sang false va nguoc lai
+  onUpdateStatus = id => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    // Logic nếu index mà trùng với index được chọn thì đổi ngược trạng thái status
+    if (index !== -1) {
+      tasks[index].status = !tasks[index].status;
+      this.setState({
+        tasks: tasks,
+      });
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+  };
+
+  // Logic lay ra index cua cac task thong qua id da lay duoc tu taskItem
+  findIndex = id => {
+    var { tasks } = this.state;
+    var result = -1;
+    // Duyet qua cac tasks de chon ra task co id trung voi id cua task duoc chon
+    tasks.forEach((task, index) => {
+      if (task.id === id) {
+        result = index;
+      }
+    });
+    return result;
   };
 
   render() {
@@ -120,7 +148,7 @@ class App extends Component {
 
             <div className="row mt-15">
               <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                <TaskList tasks={tasks} />
+                <TaskList tasks={tasks} onUpdateStatus={this.onUpdateStatus} />
               </div>
             </div>
           </div>

@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 
 class TaskItem extends Component {
+  onUpdateStatus = () => {
+    this.props.onUpdateStatus(this.props.task.id); // Truyen id cua tung task vao trong props onUpdateStatus
+  };
   render() {
     var { task, index } = this.props;
     return (
@@ -14,6 +17,7 @@ class TaskItem extends Component {
                 ? "label label-danger"
                 : "label label-success"
             }
+            onClick={this.onUpdateStatus}
           >
             {task.status === true ? "Kích hoạt" : "Ẩn"}
           </span>

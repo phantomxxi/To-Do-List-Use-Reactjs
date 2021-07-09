@@ -6,7 +6,14 @@ class TaskList extends Component {
     // Map tasks và truyền vào các thuộc tính id, name, status
     var { tasks } = this.props; // var tasks = this.props.tasks
     var elmTasks = tasks.map((task, index) => {
-      return <TaskItem key={task.id} index={index} task={task} />;
+      return (
+        <TaskItem
+          key={task.id}
+          index={index}
+          task={task}
+          onUpdateStatus={this.props.onUpdateStatus} // truyen props onUpdateStatus tu taskList vao TaskItem
+        />
+      );
     });
     return (
       <table className="table table-bordered table-hover mt-15">
