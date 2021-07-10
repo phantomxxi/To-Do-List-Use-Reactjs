@@ -71,6 +71,7 @@ class App extends Component {
 
   // Logic lay data task form sau khi submit
   onSubmit = data => {
+    console.log(data);
     var { tasks } = this.state; // tasks = this.state.tasks
     // Logic nếu id bằng '' (thực hiện công việc Thêm Công Việc) thì mới tham chiếu đến generateId() và push data sang task list
     if (data.id === "") {

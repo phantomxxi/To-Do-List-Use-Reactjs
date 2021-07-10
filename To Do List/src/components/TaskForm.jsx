@@ -10,13 +10,13 @@ class TaskForm extends Component {
     };
   }
 
-  // Xu ly logic sau khi click nut sua thi truyen state tu props vao
-  componentWillMount() {
+  // Xu ly logic sau khi click nut sua thi truyen state da update tu props vao
+  componentDidMount() {
     if (this.props.task) {
       this.setState({
         id: this.props.task.id,
-        id: this.props.task.name,
-        id: this.props.task.status,
+        name: this.props.task.name,
+        status: this.props.task.status,
       });
     }
   }
@@ -42,7 +42,7 @@ class TaskForm extends Component {
   // Truyen state vao props de sent data sang App de render
   onSubmit = event => {
     event.preventDefault(); // Hủy bỏ sự kiện tự xóa hết dữ liệu sau khi submit or refresh trang
-    this.props.onSubmit(this.state); // Sử dụng props để truyền ra App
+    this.props.onSubmit(this.state); // Sử dụng props để truyền state ra App
     // Cancel & close form
     this.onClear();
     this.onCloseForm();
