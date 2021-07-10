@@ -12,7 +12,8 @@ class TaskList extends Component {
           index={index}
           task={task}
           onUpdateStatus={this.props.onUpdateStatus} // truyen props onUpdateStatus tu taskList vao TaskItem
-          onDelete={this.props.onDelete} // truyen props onDelete tu taskList vao TaskItem
+          onDelete={this.props.onDelete}
+          onUpdate={this.props.onUpdate} // truyen props onDelete tu taskList vao TaskItem
         />
       );
     });

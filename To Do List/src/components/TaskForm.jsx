@@ -4,9 +4,21 @@ class TaskForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: "",
       name: "",
       status: false,
     };
+  }
+
+  // Xu ly logic sau khi click nut sua thi truyen state tu props vao
+  componentWillMount() {
+    if (this.props.task) {
+      this.setState({
+        id: this.props.task.id,
+        id: this.props.task.name,
+        id: this.props.task.status,
+      });
+    }
   }
 
   // Truyen props tu App vao TaskForm
@@ -29,8 +41,8 @@ class TaskForm extends Component {
 
   // Truyen state vao props de sent data sang App de render
   onSubmit = event => {
-    event.preventDefault();
-    this.props.onSubmit(this.state);
+    event.preventDefault(); // Hủy bỏ sự kiện tự xóa hết dữ liệu sau khi submit or refresh trang
+    this.props.onSubmit(this.state); // Sử dụng props để truyền ra App
     // Cancel & close form
     this.onClear();
     this.onCloseForm();
@@ -45,11 +57,14 @@ class TaskForm extends Component {
   };
 
   render() {
+    var { id } = this.state;
     return (
       <div className="panel panel-warning">
         <div className="panel-heading">
           <h3 className="panel-title">
-            Thêm Công Việc
+            {/* Logic nếu id truyền vào là '' thì thanh taskForm là Thêm Công Việc và nếu có giá trị id thì chuyển thành Cập Nhật Công Việc */}
+            {/* Nếu có id thì là sửa còn không có id thì là thêm công việc */}
+            {id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"};
             <span
               className="fa fa-times-circle text-right"
               onClick={this.onCloseForm}

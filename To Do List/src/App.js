@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       tasks: [], // id : unique, name, status
       isDisplayForm: false,
+      taskEditing: null,
     };
   }
 
@@ -47,27 +48,43 @@ class App extends Component {
     );
   }
 
-  // Xet state neu true => false và ngược lại
+  // Xet state neu true => false và ngược lại de dong mo task form
   onToggleForm = () => {
     this.setState({
       isDisplayForm: !this.state.isDisplayForm,
     });
   };
 
-  // Logic bam vao icon them cong viec thi dong form
+  // Logic bam vao icon/button thi dong form
   onCloseForm = () => {
     this.setState({
       isDisplayForm: false,
     });
   };
 
+  // Logic bam vao icon/button thi mo form
+  onShowForm = () => {
+    this.setState({
+      isDisplayForm: true,
+    });
+  };
+
   // Logic lay data task form sau khi submit
   onSubmit = data => {
     var { tasks } = this.state; // tasks = this.state.tasks
-    data.id = this.generateID(); // task
-    tasks.push(data);
+    // Logic nếu id bằng '' (thực hiện công việc Thêm Công Việc) thì mới tham chiếu đến generateId() và push data sang task list
+    if (data.id === "") {
+      data.id = this.generateID(); // task
+      tasks.push(data);
+    } else {
+      // Trong trường hợp thực hiện công việc Editing
+      // Tìm index và replay lại vị trí của task cần edit trong mảng
+      var index = this.findIndex(data.id);
+      tasks[index] = data;
+    }
     this.setState({
       tasks: tasks,
+      taskEditing: null, // Sau khi lưu lại công việc đã sửa thì đóng form và chuyển state taskEditing về
     });
     localStorage.setItem("tasks", JSON.stringify(tasks)); // chuyen du lieu sau khi submit tu dang Object sang string va luu vao localStogare
   };
@@ -115,10 +132,24 @@ class App extends Component {
     this.onCloseForm();
   };
 
+  onUpdate = id => {
+    var { tasks } = this.state;
+    var index = this.findIndex(id);
+    var taskEditing = tasks[index];
+    this.setState({
+      taskEditing: taskEditing,
+    });
+    this.onShowForm();
+  };
+
   render() {
-    var { tasks, isDisplayForm } = this.state; // var tasks = this.state.tasks
+    var { tasks, isDisplayForm, taskEditing } = this.state;
     var elmTaskForm = isDisplayForm ? (
-      <TaskForm onSubmit={this.onSubmit} onCloseForm={this.onCloseForm} />
+      <TaskForm
+        onSubmit={this.onSubmit}
+        onCloseForm={this.onCloseForm}
+        task={taskEditing}
+      />
     ) : (
       ""
     ); // Nếu state isDisplayForm === true thì hiện taskform còn ngược lại thì ko hiện
@@ -168,6 +199,7 @@ class App extends Component {
                   tasks={tasks}
                   onUpdateStatus={this.onUpdateStatus}
                   onDelete={this.onDelete}
+                  onUpdate={this.onUpdate}
                 />
               </div>
             </div>
