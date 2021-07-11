@@ -15,6 +15,7 @@ class App extends Component {
         name: "",
         status: -1,
       },
+      keyword: "",
     };
   }
 
@@ -171,8 +172,14 @@ class App extends Component {
     });
   };
 
+  // Logic gan state cua task co keyword giong keyword can tim
+  onSearch = keyword => {
+    this.setState({
+      keyword: keyword,
+    });
+  };
   render() {
-    var { tasks, isDisplayForm, taskEditing, filter } = this.state;
+    var { tasks, isDisplayForm, taskEditing, filter, keyword } = this.state;
     // Kiem tra Neu tim thay gia tri thi moi filter
     if (filter) {
       // Neu ton tai gia tri name o filter
@@ -190,11 +197,17 @@ class App extends Component {
         if (filter.status === -1) {
           return task;
         } else {
+          // Dung toan tu 3 ngoi de chuyen dang number sang boolean cho trung voi property cua state status
           return task.status === (filter.status === 1 ? true : false);
         }
       });
     }
-    console.log(filter);
+    // Logic loc ra task can tim tu keyword da go tren thanh search
+    if (keyword) {
+      tasks = tasks.filter(task => {
+        return task.name.toLowerCase().indexOf(keyword) !== -1;
+      });
+    }
     var elmTaskForm = isDisplayForm ? (
       <TaskForm
         onSubmit={this.onSubmit}
@@ -241,7 +254,7 @@ class App extends Component {
             </button>
 
             {/* Search - Sort */}
-            <Control />
+            <Control onSearch={this.onSearch} />
             {/* List */}
 
             <div className="row mt-15">
