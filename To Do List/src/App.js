@@ -11,6 +11,10 @@ class App extends Component {
       tasks: [], // id : unique, name, status
       isDisplayForm: false,
       taskEditing: null,
+      filter: {
+        name: "",
+        status: -1,
+      },
     };
   }
 
@@ -144,6 +148,8 @@ class App extends Component {
     this.onCloseForm();
   };
 
+  // Logic updateState khi index tim thay trung voi id task duoc chon thi ten
+  // cong viec trong form se trung voi ten cua cong viec can update dong thoi mo form
   onUpdate = id => {
     var { tasks } = this.state;
     var index = this.findIndex(id);
@@ -154,8 +160,41 @@ class App extends Component {
     this.onShowForm();
   };
 
+  // Logic filter ra name va status cua tasks
+  onFilter = (filterName, filterStatus) => {
+    filterStatus = parseInt(filterStatus, 10);
+    this.setState({
+      filter: {
+        name: filterName.toLowerCase(),
+        status: filterStatus,
+      },
+    });
+  };
+
   render() {
-    var { tasks, isDisplayForm, taskEditing } = this.state;
+    var { tasks, isDisplayForm, taskEditing, filter } = this.state;
+    // Kiem tra Neu tim thay gia tri thi moi filter
+    if (filter) {
+      // Neu ton tai gia tri name o filter
+      if (filter.name) {
+        // filter() se duyet qua va tra ve cac tasks
+        // indexOf() de kiem tra xem gia tri name co trung voi gia tri filter hay khong
+        // Neu khong tim thay tra ve -1
+        tasks = tasks.filter(task => {
+          return task.name.toLowerCase().indexOf(filter.name) !== -1;
+        });
+      }
+      // Kiem tra neu tim thay gia tri status thi ms thuc hien hanh vi
+      tasks = tasks.filter(task => {
+        // Kiem tra neu status = -1 thi lay ra con nguoc lai
+        if (filter.status === -1) {
+          return task;
+        } else {
+          return task.status === (filter.status === 1 ? true : false);
+        }
+      });
+    }
+    console.log(filter);
     var elmTaskForm = isDisplayForm ? (
       <TaskForm
         onSubmit={this.onSubmit}
@@ -212,6 +251,7 @@ class App extends Component {
                   onUpdateStatus={this.onUpdateStatus}
                   onDelete={this.onDelete}
                   onUpdate={this.onUpdate}
+                  onFilter={this.onFilter}
                 />
               </div>
             </div>

@@ -2,9 +2,32 @@ import React, { Component } from "react";
 import TaskItem from "./TaskItem";
 
 class TaskList extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterName: "",
+      filterStatus: -1, // all: -1, active: 1, deactive: 0
+    };
+  }
+
+  // Logic setState khi onChange doi tuong
+  onChange = event => {
+    var target = event.target;
+    var name = target.name;
+    var value = target.value;
+    this.props.onFilter(
+      name === "filterName" ? value : this.state.filterName,
+      name === "filterStatus" ? value : this.state.filterStatus
+    );
+    this.setState({
+      [name]: value,
+    });
+  };
+
   render() {
     // Map tasks và truyền vào các thuộc tính id, name, status
     var { tasks } = this.props; // var tasks = this.props.tasks
+    var { filterName, filterStatus } = this.state;
     var elmTasks = tasks.map((task, index) => {
       return (
         <TaskItem
@@ -31,10 +54,23 @@ class TaskList extends Component {
           <tr>
             <td></td>
             <td>
-              <input type="text" className="form-control" name="filterName" />
+              <input
+                type="text"
+                className="form-control"
+                name="filterName"
+                value={filterName}
+                // eslint-disable-next-line no-undef
+                onChange={this.onChange}
+              />
             </td>
             <td>
-              <select name="filterStatus" className="form-control">
+              <select
+                name="filterStatus"
+                className="form-control"
+                value={filterStatus}
+                // eslint-disable-next-line no-undef
+                onChange={this.onChange}
+              >
                 <option value={-1}>Tất cả</option>
                 <option value={0}>Ẩn</option>
                 <option value={0}>Kích Hoạt</option>
