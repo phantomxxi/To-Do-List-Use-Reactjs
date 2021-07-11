@@ -1,4 +1,7 @@
+/* eslint-disable react/no-typos */
 import React, { Component } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 class TaskForm extends Component {
   constructor(props) {
@@ -17,6 +20,24 @@ class TaskForm extends Component {
         id: this.props.task.id,
         name: this.props.task.name,
         status: this.props.task.status,
+      });
+    }
+  }
+
+  // Logic khi form mo roi van nhan duoc props(nextProps)
+  componentWillReceiveProps(nextProps) {
+    if (nextProps && nextProps.task) {
+      this.setState({
+        id: nextProps.task.id,
+        name: nextProps.task.name,
+        status: nextProps.task.status,
+      });
+    } else if (!nextProps.task) {
+      // Truong hop sua -> them
+      this.setState({
+        id: "",
+        name: "",
+        status: false,
       });
     }
   }
@@ -64,11 +85,11 @@ class TaskForm extends Component {
           <h3 className="panel-title">
             {/* Logic nếu id truyền vào là '' thì thanh taskForm là Thêm Công Việc và nếu có giá trị id thì chuyển thành Cập Nhật Công Việc */}
             {/* Nếu có id thì là sửa còn không có id thì là thêm công việc */}
-            {id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"};
-            <span
-              className="fa fa-times-circle text-right"
-              onClick={this.onCloseForm}
-            ></span>
+            {id !== "" ? "Cập Nhật Công Việc" : "Thêm Công Việc"}
+
+            <span onClick={this.onCloseForm}>
+              <FontAwesomeIcon icon={faTimesCircle} className="text-right" />
+            </span>
           </h3>
         </div>
         <div className="panel-body">

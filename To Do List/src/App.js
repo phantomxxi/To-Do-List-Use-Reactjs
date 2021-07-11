@@ -48,11 +48,22 @@ class App extends Component {
     );
   }
 
-  // Xet state neu true => false và ngược lại de dong mo task form
+  // Logic dong mo form khi Cap Nhat Cong Viec
   onToggleForm = () => {
-    this.setState({
-      isDisplayForm: !this.state.isDisplayForm,
-    });
+    if (this.state.isDisplayForm && this.state.taskEditing !== null) {
+      this.setState({
+        isDisplayForm: true,
+        // Thay đổi panel từ "Cập Nhật Công việc" thành "Thêm Công Việc"
+        taskEditing: null,
+      });
+    } else {
+      // Xet state neu true => false và ngược lại de dong mo task form
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm,
+        // Thay đổi panel từ "Cập Nhật Công việc" thành "Thêm Công Việc"
+        taskEditing: null,
+      });
+    }
   };
 
   // Logic bam vao icon/button thi dong form
