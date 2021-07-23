@@ -1,7 +1,7 @@
 import "./App.css";
 import React, { Component } from "react";
 import TaskForm from "./components/TaskForm";
-import Control from "./components/Control";
+import TaskControl from "./components/TaskControl";
 import TaskList from "./components/TaskList";
 
 class App extends Component {
@@ -16,6 +16,8 @@ class App extends Component {
         status: -1,
       },
       keyword: "",
+      sortBy: "name",
+      sortValue: 1,
     };
   }
 
@@ -178,8 +180,24 @@ class App extends Component {
       keyword: keyword,
     });
   };
+
+  onSort = (sortBy, sortValue) => {
+    this.setState({
+      sortBy: sortBy,
+      sortValue: sortValue,
+    });
+    console.log(this.state);
+  };
   render() {
-    var { tasks, isDisplayForm, taskEditing, filter, keyword } = this.state;
+    var {
+      tasks,
+      isDisplayForm,
+      taskEditing,
+      filter,
+      keyword,
+      sortBy,
+      sortValue,
+    } = this.state;
     // Kiem tra Neu tim thay gia tri thi moi filter
     if (filter) {
       // Neu ton tai gia tri name o filter
@@ -206,6 +224,19 @@ class App extends Component {
     if (keyword) {
       tasks = tasks.filter(task => {
         return task.name.toLowerCase().indexOf(keyword) !== -1;
+      });
+    }
+    if (sortBy === "name") {
+      tasks.sort((a, b) => {
+        if (a.name > b.name) return sortValue;
+        else if (a.name < b.name) return -sortValue;
+        else return 0;
+      });
+    } else {
+      tasks.sort((a, b) => {
+        if (a.status > b.status) return -sortValue;
+        else if (a.status < b.status) return sortValue;
+        else return 0;
       });
     }
     var elmTaskForm = isDisplayForm ? (
@@ -254,7 +285,12 @@ class App extends Component {
             </button>
 
             {/* Search - Sort */}
-            <Control onSearch={this.onSearch} />
+            <TaskControl
+              onSearch={this.onSearch}
+              onSort={this.onSort}
+              sortBy={sortBy}
+              sortValue={sortValue}
+            />
             {/* List */}
 
             <div className="row mt-15">
